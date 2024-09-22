@@ -1,0 +1,46 @@
+.cardSection {
+  height: 400px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+.left {
+  width: 40%;
+  color: #fff;
+  font-size: 34px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+.right {
+  width: 60%;
+  color: #000;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  font-family: Arial, Helvetica, sans-serif;
+}
+.card {
+  display: flex;
+  padding-bottom: 25px;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  font-family: Arial, Helvetica, sans-serif;
+  border-radius: 8px;
+  background-color: white;
+  width: 300px;
+  height: 350px;
+}
+.card h1 {
+  font-size: 28px;
+  color: #c70039;
+}
+.card p {
+  font-size: 20px;
+}
+.card img {
+  height: 150px;
+  width: 300px;
+  overflow: hidden;
+}
