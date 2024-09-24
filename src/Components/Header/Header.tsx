@@ -1,14 +1,14 @@
-import "./Header.css";
-const Header = () => {
+import styles from "./Header.module.css";
+const Header: React.FC = () => {
   return (
     <header>
-      <div className="header container">
-        <div className="logo">
-          <img src="/src/assets/Vought.svg" alt="Vought Logo" />
+      <div className={`${styles.header} ${styles.container}`}>
+        <div className={styles.logo}>
+          <img src="../src/assets/Vought.svg" alt="Vought Logo" />
         </div>
-        <div className="navigation">
+        <div className={styles.navigation}>
           <nav>
-            <ul className="navClass">
+            <ul className={styles.navClass}>
               <li>
                 <a href="">Home</a>
               </li>
@@ -28,4 +28,7 @@ const Header = () => {
     </header>
   );
 };
+
+Header.displayName = "Header Section";
+
 export default Header;

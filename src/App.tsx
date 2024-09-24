@@ -1,9 +1,9 @@
-import Header from "./Components/Header";
-import Hero from "./Components/Hero";
-import CardsSection from "./Components/CardsSection";
+import Header from "./Components/Header/Header";
+import Hero from "./Components/Hero/Hero";
+import CardsSection from "./Components/Cards/cards-section";
 import "./App.css";
 
-function App() {
+const App: React.FC = () => {
   return (
     <>
       <div>
@@ -13,6 +13,7 @@ function App() {
       </div>
     </>
   );
-}
+};
+App.displayName = "App Component";
 
 export default App;

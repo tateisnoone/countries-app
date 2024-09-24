@@ -1,6 +1,11 @@
+.container {
+  max-width: 1110px;
+  width: 90%;
+  margin: 0 auto;
+}
 .hero {
   height: 500px;
-  background-image: url("../assets/Homelander.jpg");
+  background-image: url("../../assets/Homelander.jpg");
   background-color: grey;
   background-position: center;
   background-repeat: no-repeat;
