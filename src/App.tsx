@@ -1,7 +1,10 @@
 import Header from "./Components/Header/Header";
 import Hero from "./Components/Hero/Hero";
-import CardsSection from "./Components/Cards/cards-section";
+import CardSection from "./Components/Card/card-section";
 import "./App.css";
+import CardHeader from "./Components/Card/Card-Header/card-header";
+import CardContent from "./Components/Card/Card-Content/card-content";
+import CardFooter from "./Components/Card/Card-Footer/card-footer";
 
 const App: React.FC = () => {
   return (
@@ -9,7 +12,11 @@ const App: React.FC = () => {
       <div>
         <Header />
         <Hero />
-        <CardsSection />
+        <CardSection>
+          <CardHeader />
+          <CardContent />
+          <CardFooter />
+        </CardSection>
       </div>
     </>
   );

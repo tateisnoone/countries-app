@@ -37,19 +37,22 @@
   width: 300px;
   height: 350px;
 }
-.card h1 {
+/* .cardHeader img {
+  height: 150px;
+  width: 300px;
+  overflow: hidden;
+  border-top-left-radius: 7px;
+  border-top-right-radius: 7px;
+} */
+/* .card h1 {
   font-size: 28px;
   color: #c70039;
 }
 .card p {
   font-size: 20px;
-}
-.card img {
-  height: 150px;
-  width: 300px;
-  overflow: hidden;
-}
-.cardContent {
+} */
+
+/* .cardContent {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -71,4 +74,4 @@
 }
 .cardFooter:hover {
   color: #c70039;
-}
+} */
