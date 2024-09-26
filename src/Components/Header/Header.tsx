@@ -1,10 +1,11 @@
 import styles from "./Header.module.css";
-const Header: React.FC = () => {
+import voughtLogo from "@/assets/Vought.svg";
+export const Header: React.FC = () => {
   return (
     <header>
       <div className={`${styles.header} ${styles.container}`}>
         <div className={styles.logo}>
-          <img src="../src/assets/Vought.svg" alt="Vought Logo" />
+          <img src={voughtLogo} alt="Vought Logo" />
         </div>
         <div className={styles.navigation}>
           <nav>
@@ -30,5 +31,3 @@ const Header: React.FC = () => {
 };
 
 Header.displayName = "Header Section";
-
-export default Header;

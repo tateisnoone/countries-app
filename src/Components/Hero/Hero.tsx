@@ -1,6 +1,6 @@
 import styles from "./Hero.module.css";
 
-const Hero: React.FC = () => {
+export const Hero: React.FC = () => {
   return (
     <div className={`${styles.hero} ${styles.container}`}>
       <div className={styles.aboutUs}>
@@ -17,5 +17,3 @@ const Hero: React.FC = () => {
 };
 
 Hero.displayName = "Hero Section";
-
-export default Hero;
