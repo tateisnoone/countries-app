@@ -1,10 +1,13 @@
 import styles from "./card-header.module.css";
 import "../card-section";
-import USAFlag from "@/assets/usaFlag.jpeg";
-const CardHeader: React.FC = () => {
+
+const CardHeader: React.FC<{ imgSrc: string; altText: string }> = ({
+  imgSrc,
+  altText,
+}) => {
   return (
     <div className={styles.cardHeader}>
-      <img src={USAFlag} alt="USA Flag" />
+      <img src={imgSrc} alt={altText} />
     </div>
   );
 };
