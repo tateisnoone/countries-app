@@ -8,8 +8,8 @@ const CardContent: React.FC<{
   return (
     <div className={styles.cardContent}>
       <h1>{heading}</h1>
-      <p>Population:{population}</p>
-      <p>Capital:{capital}</p>
+      <p>Population: {population}</p>
+      <p>Capital: {capital}</p>
     </div>
   );
 };
