@@ -1,12 +1,15 @@
 import React from "react";
 import { Header } from "#/Header";
 import { Footer } from "#/Footer";
+import { Outlet } from "react-router-dom";
 
-const Dashboard: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+const Dashboard: React.FC = () => {
   return (
     <div>
       <Header />
-      <main>{children}</main>
+      <main>
+        <Outlet />
+      </main>
       <Footer />
     </div>
   );

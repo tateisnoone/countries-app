@@ -1,18 +1,13 @@
 import Dashboard from "@/layout/dashboard";
-import { Hero } from "#/Hero";
-import CardSection from "#/Card/card-section";
 import "@/App.css";
-import CardHeader from "#/Card/Card-Header/card-header";
-import CardContent from "#/Card/Card-Content/card-content";
-import CardFooter from "#/Card/Card-Footer/card-footer";
-import USAFlag from "@/assets/usaFlag.jpeg";
+import CardsListView from "./pages/home/views/list";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import AboutView from "./pages/about-us/views";
+import NotFoundPage from "./pages/404";
+import { Suspense } from "react";
+
 //import GeorgiaFlag from "@/assets/georgiaFlag.jpeg";
-const countryUSA = {
-  name: "USA",
-  population: 331000000,
-  capital: "Washington D.C",
-  img: USAFlag,
-};
+
 // const countryGE = {
 //   name: "Georgia",
 //   population: 331000000,
@@ -23,20 +18,22 @@ const countryUSA = {
 const App: React.FC = () => {
   return (
     <>
-      <div>
-        <Dashboard>
-          <Hero />
-          <CardSection>
-            <CardHeader imgSrc={countryUSA.img} altText="USA Flag" />
-            <CardContent
-              heading={countryUSA.name}
-              population={countryUSA.population}
-              capital={countryUSA.capital}
+      <BrowserRouter>
+        <Routes>
+          <Route element={<Dashboard />}>
+            <Route
+              path="/"
+              element={
+                <Suspense fallback={<div>VOUGHT WATCHES YOU</div>}>
+                  <CardsListView />
+                </Suspense>
+              }
             />
-            <CardFooter />
-          </CardSection>
-        </Dashboard>
-      </div>
+            <Route path="/about" element={<AboutView />} />
+          </Route>
+          <Route path="*" element={<NotFoundPage />} />
+        </Routes>
+      </BrowserRouter>
     </>
   );
 };

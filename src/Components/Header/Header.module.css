@@ -23,14 +23,21 @@ body {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+}
+.navClass li {
   font-family: Arial, Helvetica, sans-serif;
+  transition: 0.5s ease-out;
   font-weight: 700;
   cursor: pointer;
   color: #fff;
 }
-.navClass li {
-  transition: 0.5s ease-out;
-}
 .navClass li:hover {
   color: #c70039;
+}
+.activeNav {
+  color: #c70039;
+  font-family: Arial, Helvetica, sans-serif;
+  transition: 0.5s ease-out;
+  font-weight: 700;
+  cursor: pointer;
 }
