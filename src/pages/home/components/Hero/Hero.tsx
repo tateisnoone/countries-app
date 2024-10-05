@@ -1,4 +1,4 @@
-import styles from "./Hero.module.css";
+import styles from "./hero.module.css";
 const Hero: React.FC = () => {
   return (
     <div className={`${styles.hero} ${styles.container}`}>
