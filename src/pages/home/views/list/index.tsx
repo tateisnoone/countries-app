@@ -8,7 +8,7 @@ const LazyCardSection = lazy(
   () => import("../../components/card-list/card-section")
 );
 
-const LazyHero = lazy(() => import("../../components/hero"));
+const LazyHero = lazy(() => import("../../components/hero/Hero"));
 
 const CardsListView = () => {
   return (
