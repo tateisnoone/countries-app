@@ -3,17 +3,10 @@ import "@/App.css";
 import CardsListView from "./pages/home/views/list";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import AboutView from "./pages/about-us/views";
+import ContactFormView from "./pages/contact/views";
 import NotFoundPage from "./pages/404";
 import { Suspense } from "react";
-
-//import GeorgiaFlag from "@/assets/georgiaFlag.jpeg";
-
-// const countryGE = {
-//   name: "Georgia",
-//   population: 331000000,
-//   capital: "Tbilisi",
-//   img: GeorgiaFlag,
-// }; //amas mere vuzam rames gviania da im just a girl
+import CardDetailsPageView from "./pages/home/views/details";
 
 const App: React.FC = () => {
   return (
@@ -22,14 +15,19 @@ const App: React.FC = () => {
         <Routes>
           <Route element={<Dashboard />}>
             <Route
+              errorElement={<NotFoundPage />}
               path="/"
               element={
-                <Suspense fallback={<div>VOUGHT WATCHES YOU</div>}>
+                <Suspense
+                  fallback={<div style={{ color: "#fff" }}>Loading...</div>}
+                >
                   <CardsListView />
                 </Suspense>
               }
             />
+            <Route path="/:id" element={<CardDetailsPageView />} />
             <Route path="/about" element={<AboutView />} />
+            <Route path="/contact" element={<ContactFormView />} />
           </Route>
           <Route path="*" element={<NotFoundPage />} />
         </Routes>

@@ -1,0 +1,31 @@
+.container {
+  max-width: 1110px;
+  width: 90%;
+  margin: 0 auto;
+}
+
+.card_info {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  height: 600px;
+  margin-bottom: 50px;
+}
+.card_info h1 {
+  color: #fff;
+  font-size: 32px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+.card_info img {
+  width: 70%;
+  height: 350px;
+}
+
+.card_info p {
+  color: #fff;
+  font-size: 24px;
+  font-family: Arial, Helvetica, sans-serif;
+  line-height: 30px;
+  width: 70%;
+}

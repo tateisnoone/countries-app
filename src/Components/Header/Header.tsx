@@ -34,7 +34,9 @@ export const Header: React.FC = () => {
                 </NavLink>
               </li>
               <li>
-                <a href="">Contact Us</a>
+                <NavLink className={handleNavActivity} to="/contact">
+                  <a>Contact</a>
+                </NavLink>
               </li>
             </ul>
           </nav>
