@@ -1,9 +1,20 @@
 import styles from "./contact-form.module.css";
 const ContactForm = () => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const userInfo = {
+      name: (document.getElementById("name") as HTMLInputElement).value,
+      surname: (document.getElementById("surname") as HTMLInputElement).value,
+      email: (document.getElementById("email") as HTMLInputElement).value,
+      message: (document.getElementById("message") as HTMLTextAreaElement)
+        .value,
+    };
+    return console.log(userInfo);
+  };
   return (
     <div className={`${styles.contact_form} ${styles.container}`}>
       <h1>Contact</h1>
-      <form className={styles.form} action="">
+      <form className={styles.form} onSubmit={handleSubmit}>
         <div className={styles.contact_fields}>
           <label htmlFor="name">Name:</label>
           <input
