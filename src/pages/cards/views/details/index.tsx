@@ -1,5 +1,5 @@
+import { cardDetails } from "@/pages/home/static/countries-data";
 import { useParams } from "react-router-dom";
-import { cardDetails } from "../../static/countries-data";
 import CardDetailsPage from "../../components/card-details/details-page";
 
 const CardDetailsPageView = () => {

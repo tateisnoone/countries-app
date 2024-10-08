@@ -8,6 +8,7 @@ export const cardDetails = [
     saves: "1,000,000",
     img: USAFlag,
     id: "1",
+    vote: 0,
   },
   {
     name: "Georgia",
@@ -16,5 +17,6 @@ export const cardDetails = [
     img: GeorgiaFlag,
     saves: "10,000",
     id: "2",
+    vote: 0,
   },
 ];
