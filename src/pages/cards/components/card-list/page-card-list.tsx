@@ -7,7 +7,7 @@ import PageCard from "../card/page-card";
 import { useState } from "react";
 
 const CardPageSection: React.FC = () => {
-  const [cardList] = useState<
+  const [cardList, setCardList] = useState<
     {
       name: string;
       population: number;
@@ -18,10 +18,37 @@ const CardPageSection: React.FC = () => {
       vote: number;
     }[]
   >(cardDetails);
+
+  const [isSorted, setIsSorted] = useState(false);
+  const handleCardVote = (id: string) => {
+    return () => {
+      const updatedCardList = cardList.map((card) => {
+        if (card.id === id) {
+          return { ...card, vote: card.vote + 1 };
+        }
+        return { ...card };
+      });
+
+      setCardList(updatedCardList);
+    };
+  };
+  const handleSortClick = () => {
+    setIsSorted((prevIsSorted) => !prevIsSorted);
+  };
+
+  let displayedCardList;
+  if (isSorted) {
+    displayedCardList = [...cardList].sort((a, b) => b.vote - a.vote);
+  } else {
+    displayedCardList = cardList;
+  }
   return (
     <div className={`${styles.cardSection} ${styles.container}`}>
+      <p className={styles.sort} onClick={handleSortClick}>
+        Sort by Most Voted
+      </p>
       <div className={styles.right}>
-        {cardList.map((card) => {
+        {displayedCardList.map((card) => {
           return (
             <PageCard id={card.id}>
               <PageCardHeader imgSrc={card.img} altText={`${card.name} Flag`} />
@@ -29,6 +56,8 @@ const CardPageSection: React.FC = () => {
                 heading={card.name}
                 population={card.population}
                 capital={card.capital}
+                onVote={handleCardVote(card.id)}
+                voteCount={card.vote}
               />
               <PageCardFooter id={card.id} />
             </PageCard>

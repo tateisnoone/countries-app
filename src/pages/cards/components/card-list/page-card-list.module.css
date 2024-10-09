@@ -6,9 +6,13 @@
 .cardSection {
   height: 400px;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: space-between;
-  align-items: center;
+}
+.sort {
+  color: #fff;
+  font-size: 24px;
+  cursor: pointer;
 }
 .left {
   width: 40%;
