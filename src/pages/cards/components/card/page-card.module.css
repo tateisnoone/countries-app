@@ -10,3 +10,6 @@
   width: 300px;
   height: 350px;
 }
+.page_card.deleted {
+  background-color: grey;
+}

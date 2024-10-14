@@ -3,7 +3,7 @@ import GeorgiaFlag from "@/assets/georgiaFlag.jpeg";
 import SouthKoreaFlag from "@/assets/southkoreaFlag.jpeg";
 import NorwayFlag from "@/assets/norwayFlag.jpeg";
 import UnitedKingdomFlag from "@/assets/unitedkingdomFlag.jpeg";
-export const cardDetails = [
+export const cardsInitialState = [
   {
     name: "USA",
     population: 331000000,

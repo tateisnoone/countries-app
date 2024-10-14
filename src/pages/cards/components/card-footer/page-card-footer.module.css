@@ -9,7 +9,22 @@
   justify-content: center;
   align-items: center;
   padding-top: 15px;
+  gap: 20px;
 }
-.cardFooter:hover {
-  color: #c70039;
+
+.line_div {
+  width: 1px;
+  height: 35px;
+  background-color: #c70039;
+}
+
+.cardFooter a {
+  margin-left: -15px;
+}
+
+.for_delete {
+  cursor: pointer;
+}
+.for_recover {
+  cursor: pointer;
 }

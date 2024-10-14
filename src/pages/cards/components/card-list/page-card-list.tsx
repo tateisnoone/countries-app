@@ -1,70 +1,92 @@
 import styles from "./page-card-list.module.css";
-import { cardDetails } from "@/pages/home/static/countries-data";
 import PageCardContent from "../card-content/page-card-content";
 import PageCardFooter from "../card-footer/page-card-footer";
 import PageCardHeader from "../card-header/page-card-header";
 import PageCard from "../card/page-card";
-import { useState } from "react";
+import { FormEvent, useReducer } from "react";
+import CardCreateForm from "../card-create-form/card-create-form";
+import { cardsReducer } from "./reducer/reducer";
+import { cardsInitialState } from "./reducer/state";
 
 const CardPageSection: React.FC = () => {
-  const [cardList, setCardList] = useState<
-    {
-      name: string;
-      population: number;
-      capital: string;
-      saves: string;
-      img: string;
-      id: string;
-      vote: number;
-    }[]
-  >(cardDetails);
+  const [cardList, dispatch] = useReducer(cardsReducer, cardsInitialState);
 
-  const [isSorted, setIsSorted] = useState(false);
   const handleCardVote = (id: string) => {
     return () => {
-      const updatedCardList = cardList.map((card) => {
-        if (card.id === id) {
-          return { ...card, vote: card.vote + 1 };
-        }
-        return { ...card };
-      });
-
-      setCardList(updatedCardList);
+      dispatch({ type: "vote", payload: { id } });
     };
   };
-  const handleSortClick = () => {
-    setIsSorted((prevIsSorted) => !prevIsSorted);
+
+  const handleCardsSort = (sortType: "asc" | "desc") => {
+    dispatch({ type: "sort", payload: { sortType } });
   };
 
-  let displayedCardList;
-  if (isSorted) {
-    displayedCardList = [...cardList].sort((a, b) => b.vote - a.vote);
-  } else {
-    displayedCardList = cardList;
-  }
+  const handleCardCreate = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const cardFields: any = {};
+    const formData = new FormData(e.currentTarget);
+    for (const [key, value] of formData) {
+      cardFields[key] = value;
+    }
+    dispatch({ type: "create", payload: { cardFields } });
+  };
+
+  const handleCardDelete = (id: string) => {
+    dispatch({ type: "delete", payload: { id } });
+  };
+  const handleCardRecover = (id: string) => {
+    dispatch({ type: "recover", payload: { id } });
+  };
   return (
-    <div className={`${styles.cardSection} ${styles.container}`}>
-      <p className={styles.sort} onClick={handleSortClick}>
-        Sort by Most Voted
-      </p>
-      <div className={styles.right}>
-        {displayedCardList.map((card) => {
-          return (
-            <PageCard id={card.id}>
-              <PageCardHeader imgSrc={card.img} altText={`${card.name} Flag`} />
-              <PageCardContent
-                heading={card.name}
-                population={card.population}
-                capital={card.capital}
-                onVote={handleCardVote(card.id)}
-                voteCount={card.vote}
-              />
-              <PageCardFooter id={card.id} />
-            </PageCard>
-          );
-        })}
+    <>
+      <CardCreateForm onCardCreate={handleCardCreate} />
+      <div className={`${styles.cardSection} ${styles.container}`}>
+        <p className={styles.sort}>
+          Sort by <span> </span>
+          <button
+            onClick={() => {
+              handleCardsSort("desc");
+            }}
+          >
+            Most Voted
+          </button>
+          /
+          <button
+            onClick={() => {
+              handleCardsSort("asc");
+            }}
+          >
+            Least Voted
+          </button>
+        </p>
+        <div className={styles.right}>
+          {cardList.map((card) => {
+            return (
+              <PageCard key={card.id} id={card.id} deleted={card.deleted}>
+                <PageCardHeader
+                  imgSrc={card.img}
+                  altText={`${card.name} Flag`}
+                />
+                <PageCardContent
+                  heading={card.name}
+                  population={card.population}
+                  capital={card.capital}
+                  onVote={handleCardVote(card.id)}
+                  voteCount={card.vote}
+                />
+                <PageCardFooter
+                  id={card.id}
+                  onDelete={handleCardDelete}
+                  onRecover={handleCardRecover}
+                  isDeleted={card.deleted}
+                />
+              </PageCard>
+            );
+          })}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

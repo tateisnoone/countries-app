@@ -12,9 +12,9 @@ const PageCardContent: React.FC<{
       <h1>{heading}</h1>
       <p>Population: {population}</p>
       <p>Capital: {capital}</p>
-      <p className={styles.vote_text}>
+      <h2 className={styles.vote_text}>
         I'm from {heading} - <span onClick={onVote}>Vote {voteCount} </span>
-      </p>
+      </h2>
     </div>
   );
 };

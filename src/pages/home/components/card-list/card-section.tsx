@@ -25,18 +25,30 @@ const CardSection: React.FC = () => {
         <Link to="/cards">See More</Link>
       </div>
       <div className={styles.right}>
-        {cardList.map((card) => {
-          return (
-            <Card id={card.id}>
-              <CardHeader imgSrc={card.img} altText={`${card.name} Flag`} />
-              <CardContent
-                heading={card.name}
-                population={card.population}
-                capital={card.capital}
-              />
-            </Card>
-          );
-        })}
+        return (
+        <Card id={cardList[0].id}>
+          <CardHeader
+            imgSrc={cardList[0].img}
+            altText={`${cardList[0].name} Flag`}
+          />
+          <CardContent
+            heading={cardList[0].name}
+            population={cardList[0].population}
+            capital={cardList[0].capital}
+          />
+        </Card>
+        <Card id={cardList[1].id}>
+          <CardHeader
+            imgSrc={cardList[1].img}
+            altText={`${cardList[1].name} Flag`}
+          />
+          <CardContent
+            heading={cardList[1].name}
+            population={cardList[1].population}
+            capital={cardList[1].capital}
+          />
+        </Card>
+        );
       </div>
     </div>
   );
