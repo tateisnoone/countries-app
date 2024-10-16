@@ -3,12 +3,13 @@ import PageCardContent from "../card-content/page-card-content";
 import PageCardFooter from "../card-footer/page-card-footer";
 import PageCardHeader from "../card-header/page-card-header";
 import PageCard from "../card/page-card";
-import { FormEvent, useReducer } from "react";
+import { useReducer, useState } from "react";
 import CardCreateForm from "../card-create-form/card-create-form";
 import { cardsReducer } from "./reducer/reducer";
 import { cardsInitialState } from "./reducer/state";
 
 const CardPageSection: React.FC = () => {
+  const [cardValidationErrMsg, setCardValidationErrMsg] = useState("");
   const [cardList, dispatch] = useReducer(cardsReducer, cardsInitialState);
 
   const handleCardVote = (id: string) => {
@@ -21,13 +22,31 @@ const CardPageSection: React.FC = () => {
     dispatch({ type: "sort", payload: { sortType } });
   };
 
-  const handleCardCreate = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const cardFields: any = {};
-    const formData = new FormData(e.currentTarget);
-    for (const [key, value] of formData) {
-      cardFields[key] = value;
+  const handleCardCreate = (cardFields: {
+    name: string;
+    population: number;
+    capital: string;
+  }) => {
+    if (cardFields.name.length > 20) {
+      return setCardValidationErrMsg(
+        "Country name should contain less than 20 characters"
+      );
+    } else setCardValidationErrMsg("");
+    if (cardFields.name.length < 2) {
+      return;
+    }
+    if (cardFields.population < 700) {
+      return setCardValidationErrMsg(
+        "Population should should be more than 700"
+      );
+    } else setCardValidationErrMsg("");
+    if (cardFields.capital.length > 20) {
+      return setCardValidationErrMsg(
+        "Capital should contain less than 20 characters"
+      );
+    } else setCardValidationErrMsg("");
+    if (cardFields.capital.length < 2) {
+      return;
     }
     dispatch({ type: "create", payload: { cardFields } });
   };
@@ -40,7 +59,10 @@ const CardPageSection: React.FC = () => {
   };
   return (
     <>
-      <CardCreateForm onCardCreate={handleCardCreate} />
+      <CardCreateForm
+        errMsg={cardValidationErrMsg}
+        onCardCreate={handleCardCreate}
+      />
       <div className={`${styles.cardSection} ${styles.container}`}>
         <p className={styles.sort}>
           Sort by <span> </span>
