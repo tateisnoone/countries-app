@@ -21,7 +21,7 @@ const CardCreateForm: React.FC<cardCreateProps> = ({
   const handleNameChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     if (name.length < 2) {
-      setNameErrMsg("Country name should containt more than 2 characters");
+      setNameErrMsg("Country name should contain more than 2 characters");
     } else setNameErrMsg("");
     setName(value);
   };
@@ -32,13 +32,13 @@ const CardCreateForm: React.FC<cardCreateProps> = ({
   const handleCapitalChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     if (capital.length < 2) {
-      setCapitalErrMsg("Capital should containt more than 2 characters");
+      setCapitalErrMsg("Capital should contain more than 2 characters");
     } else setCapitalErrMsg("");
     setCapital(value);
   };
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    onCardCreate({ name, population, capital });
+    onCardCreate({ name, population: Number(population), capital });
   };
   return (
     <div className={`${styles.cardCreateForm} ${styles.container}`}>
