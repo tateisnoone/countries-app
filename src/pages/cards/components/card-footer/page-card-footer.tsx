@@ -11,7 +11,7 @@ const PageCardFooter: React.FC<
 > = ({ id, onDelete, onRecover, isDeleted }) => {
   return (
     <div className={styles.cardFooter}>
-      <Link to={`/cards/${id}`}>Learn More</Link>
+      <Link to={`${id}`}>Learn More</Link>
       <div className={styles.line_div}></div>
       {isDeleted ? (
         <span className={styles.for_recover} onClick={() => onRecover(id)}>

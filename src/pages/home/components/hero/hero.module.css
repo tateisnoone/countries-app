@@ -18,7 +18,6 @@
   width: 400px;
   color: #fff;
   height: 250px;
-
   font-family: Arial, Helvetica, sans-serif;
   display: flex;
   flex-direction: column;
@@ -34,6 +33,27 @@
   font-size: 16px;
   line-height: 25px;
 }
+
+.geAboutUs {
+  width: 400px;
+  color: #fff;
+  height: 300px;
+  font-family: Arial, Helvetica, sans-serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.geAboutUs h1 {
+  font-weight: 700;
+  font-size: 28px;
+  line-height: 34px;
+}
+.geAboutUs p {
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 25px;
+}
+
 .heroButton {
   cursor: pointer;
   font-size: 16px;

@@ -1,7 +1,7 @@
 import Dashboard from "@/layout/dashboard";
 import "@/App.css";
 import CardsListView from "./pages/home/views/list";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import AboutView from "./pages/about-us/views";
 import ContactFormView from "./pages/contact/views";
 import CardDetailsPageView from "./pages/cards/views/details";
@@ -14,10 +14,10 @@ const App: React.FC = () => {
     <>
       <BrowserRouter>
         <Routes>
-          <Route element={<Dashboard />}>
+          <Route path="/:lang" element={<Dashboard />}>
             <Route
               errorElement={<NotFoundPage />}
-              path="/"
+              path="home"
               element={
                 <Suspense
                   fallback={<div style={{ color: "#fff" }}>Loading...</div>}
@@ -27,10 +27,10 @@ const App: React.FC = () => {
               }
             />
 
-            <Route path="/about" element={<AboutView />} />
-            <Route path="/contact" element={<ContactFormView />} />
+            <Route path="about" element={<AboutView />} />
+            <Route path="contact" element={<ContactFormView />} />
             <Route
-              path="/cards"
+              path="home/cards"
               element={
                 <Suspense
                   fallback={
@@ -41,8 +41,9 @@ const App: React.FC = () => {
                 </Suspense>
               }
             />
-            <Route path="/cards/:id" element={<CardDetailsPageView />} />
+            <Route path="home/cards/:id" element={<CardDetailsPageView />} />
           </Route>
+          <Route path="/" element={<Navigate to="/en/home" />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </BrowserRouter>

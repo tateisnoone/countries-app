@@ -17,6 +17,16 @@ body {
   height: 70px;
 }
 .navigation {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 480px;
+}
+.enNav {
+  width: 300px;
+  margin-left: 80px;
+}
+.geNav {
   width: 400px;
 }
 .navClass {
@@ -40,4 +50,29 @@ body {
   transition: 0.5s ease-out;
   font-weight: 700;
   cursor: pointer;
+}
+
+.langDiv {
+  width: 70px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  color: #fff;
+}
+.langStick {
+  background-color: #fff;
+  width: 2px;
+}
+
+.langDiv button {
+  background-color: #000;
+  border: none;
+  color: #fff;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.5s ease-out;
+}
+.langDiv button:hover {
+  color: #c70039;
 }
