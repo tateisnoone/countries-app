@@ -7,10 +7,25 @@ import { useReducer, useState } from "react";
 import CardCreateForm from "../card-create-form/card-create-form";
 import { cardsReducer } from "./reducer/reducer";
 import { cardsInitialState } from "./reducer/state";
+import { useParams } from "react-router-dom";
 
 const CardPageSection: React.FC = () => {
+  const { lang } = useParams<{ lang: "en" | "ge" }>();
   const [cardValidationErrMsg, setCardValidationErrMsg] = useState("");
   const [cardList, dispatch] = useReducer(cardsReducer, cardsInitialState);
+  const selectedLang = lang || "en";
+
+  interface Card {
+    id: string;
+    name: string;
+    nameGe: string; // Add this line for Georgian name
+    population: number;
+    capital: string;
+    capitalGe: string; // Add this line for Georgian capital
+    image: string;
+    vote: number;
+    deleted: boolean;
+  }
 
   const handleCardVote = (id: string) => {
     return () => {
@@ -26,6 +41,7 @@ const CardPageSection: React.FC = () => {
     name: string;
     population: number;
     capital: string;
+    image: string;
   }) => {
     if (cardFields.name.length > 20) {
       return setCardValidationErrMsg(
@@ -57,6 +73,17 @@ const CardPageSection: React.FC = () => {
   const handleCardRecover = (id: string) => {
     dispatch({ type: "recover", payload: { id } });
   };
+  const handleNameLang = (selectedLang: string, card: Card) => {
+    if (selectedLang === "ge") {
+      return card.nameGe;
+    } else return card.name;
+  };
+
+  const handleCapitalLang = (selectedLang: string, card: Card) => {
+    if (selectedLang === "ge") {
+      return card.capitalGe;
+    } else return card.capital;
+  };
   return (
     <>
       <CardCreateForm
@@ -87,13 +114,13 @@ const CardPageSection: React.FC = () => {
             return (
               <PageCard key={card.id} id={card.id} deleted={card.deleted}>
                 <PageCardHeader
-                  imgSrc={card.img}
+                  image={card.image}
                   altText={`${card.name} Flag`}
                 />
                 <PageCardContent
-                  heading={card.name}
+                  heading={handleNameLang(selectedLang, card)}
                   population={card.population}
-                  capital={card.capital}
+                  capital={handleCapitalLang(selectedLang, card)}
                   onVote={handleCardVote(card.id)}
                   voteCount={card.vote}
                 />

@@ -1,12 +1,12 @@
 import styles from "./page-card-header.module.css";
 
-const PageCardHeader: React.FC<{ imgSrc: string; altText: string }> = ({
-  imgSrc,
+const PageCardHeader: React.FC<{ image: string; altText: string }> = ({
+  image,
   altText,
 }) => {
   return (
     <div className={styles.cardHeader}>
-      <img src={imgSrc} alt={altText} />
+      <img src={image} alt={altText} />
     </div>
   );
 };

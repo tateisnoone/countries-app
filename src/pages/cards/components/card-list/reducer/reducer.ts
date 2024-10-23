@@ -1,10 +1,9 @@
-import imgSrc from "@/assets/defaultcardcover.jpeg";
 type cardsReducerInitialState = {
   name: string;
   population: number;
   capital: string;
   saves: string;
-  img: string;
+  image: string;
   id: string;
   vote: number;
   deleted: boolean;
@@ -25,20 +24,16 @@ export const cardsReducer = (
     return updatedCardList;
   }
   if (action.type === "sort") {
-   
     const activeCards = cardList.filter((card) => !card.deleted);
 
-  
     const copiedActiveCards = [...activeCards];
 
-   
     if (action.payload.sortType === "asc") {
       copiedActiveCards.sort((a, b) => a.vote - b.vote);
     } else if (action.payload.sortType === "desc") {
       copiedActiveCards.sort((a, b) => b.vote - a.vote);
     }
 
-    
     const deletedCards = cardList.filter((card) => card.deleted);
 
     // Return the sorted active cards followed by the deleted cards
@@ -50,7 +45,6 @@ export const cardsReducer = (
       ...cardList,
       {
         ...action.payload.cardFields,
-        img: imgSrc,
         vote: 0,
         id: (Number(cardList.at(-1)?.id) + 1).toString(),
       },
