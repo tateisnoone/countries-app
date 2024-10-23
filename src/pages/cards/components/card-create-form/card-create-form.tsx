@@ -3,11 +3,15 @@ import styles from "./card-create-form.module.css";
 type cardCreateProps = {
   onCardCreate: (cardFields: {
     name: string;
+    nameGe: string;
     population: number;
     capital: string;
+    capitalGe: string;
+    image: string;
   }) => void;
   errMsg: string;
 };
+
 const CardCreateForm: React.FC<cardCreateProps> = ({
   onCardCreate,
   errMsg,
@@ -15,8 +19,22 @@ const CardCreateForm: React.FC<cardCreateProps> = ({
   const [nameErrMsg, setNameErrMsg] = useState("");
   const [capitalErrMsg, setCapitalErrMsg] = useState("");
   const [name, setName] = useState("");
+  const [nameGe, setGeName] = useState("");
   const [population, setPopulation] = useState("");
   const [capital, setCapital] = useState("");
+  const [capitalGe, setGeCapital] = useState("");
+  const [image, setImage] = useState<string>("");
+
+  const handleUpload = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const data = new FileReader();
+      data.addEventListener("load", () => {
+        setImage(data.result as string);
+      });
+      data.readAsDataURL(file);
+    }
+  };
 
   const handleNameChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -24,6 +42,13 @@ const CardCreateForm: React.FC<cardCreateProps> = ({
       setNameErrMsg("Country name should contain more than 2 characters");
     } else setNameErrMsg("");
     setName(value);
+  };
+  const handleGeNameChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    if (nameGe.length < 2) {
+      setNameErrMsg("Country name should contain more than 2 characters");
+    } else setNameErrMsg("");
+    setGeName(value);
   };
   const handlePopulationChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -36,24 +61,51 @@ const CardCreateForm: React.FC<cardCreateProps> = ({
     } else setCapitalErrMsg("");
     setCapital(value);
   };
+  const handleCapitalGeChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    if (capitalGe.length < 2) {
+      setCapitalErrMsg("Capital should contain more than 2 characters");
+    } else setCapitalErrMsg("");
+    setGeCapital(value);
+  };
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    onCardCreate({ name, population: Number(population), capital });
+    onCardCreate({
+      name,
+      nameGe,
+      population: Number(population),
+      capital,
+      capitalGe,
+      image,
+    });
   };
+
   return (
     <div className={`${styles.cardCreateForm} ${styles.container}`}>
       <h1>Add Country</h1>
       <form className={styles.country_form} onSubmit={handleSubmit}>
-        <label htmlFor="name">Country Name:</label>
-        <input
-          type="text"
-          id="name"
-          name="name"
-          value={name}
-          onChange={handleNameChange}
-          placeholder="country name"
-          required
-        />
+        <div className={styles.langFields}>
+          <label htmlFor="name">Country:</label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            value={name}
+            onChange={handleNameChange}
+            placeholder="country name"
+            required
+          />
+          <label htmlFor="nameGe">Country (GE):</label>
+          <input
+            type="text"
+            id="nameGe"
+            name="nameGe"
+            value={nameGe}
+            onChange={handleGeNameChange}
+            placeholder="country name (GE)"
+            required
+          />
+        </div>
         <span style={{ color: "#c70039" }}>{nameErrMsg}</span>
         <label htmlFor="population">Population:</label>
         <input
@@ -64,16 +116,36 @@ const CardCreateForm: React.FC<cardCreateProps> = ({
           onChange={handlePopulationChange}
           placeholder="population"
         />
-        <label htmlFor="capital">Capital:</label>
-        <input
-          type="text"
-          id="capital"
-          name="capital"
-          value={capital}
-          onChange={handleCapitalChange}
-          placeholder="capital"
-        />
+        <div className={styles.langFields}>
+          <label htmlFor="capital">Capital:</label>
+          <input
+            type="text"
+            id="capital"
+            name="capital"
+            value={capital}
+            onChange={handleCapitalChange}
+            placeholder="capital"
+          />
+          <label htmlFor="capital">Capital (GE):</label>
+          <input
+            type="text"
+            id="capitalGe"
+            name="capitalGe"
+            value={capitalGe}
+            onChange={handleCapitalGeChange}
+            placeholder="capital (GE)"
+          />
+        </div>
         <span style={{ color: "#c70039" }}>{capitalErrMsg}</span>
+        <label htmlFor="file">Upload File:</label>
+        <input
+          type="file"
+          id="file"
+          name="file"
+          onChange={handleUpload}
+          accept=".png, .jpg"
+          required
+        />
         <button className={styles.country_button}>Submit</button>
         <span style={{ color: "#c70039" }}>{errMsg}</span>
       </form>
