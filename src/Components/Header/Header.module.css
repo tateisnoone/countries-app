@@ -1,78 +1,78 @@
 body {
-  background-color: #000;
+    background-color: #000;
 }
 .container {
-  max-width: 1110px;
-  width: 90%;
-  margin: 0 auto;
+    max-width: 1110px;
+    width: 90%;
+    margin: 0 auto;
 }
 .header {
-  height: 100px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+    height: 100px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 .logo img {
-  width: 65px;
-  height: 70px;
+    width: 65px;
+    height: 70px;
 }
 .navigation {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  width: 480px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 480px;
 }
 .enNav {
-  width: 300px;
-  margin-left: 80px;
+    width: 300px;
+    margin-left: 80px;
 }
 .geNav {
-  width: 400px;
+    width: 400px;
 }
 .navClass {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
 .navClass li {
-  font-family: Arial, Helvetica, sans-serif;
-  transition: 0.5s ease-out;
-  font-weight: 700;
-  cursor: pointer;
-  color: #fff;
+    font-family: Arial, Helvetica, sans-serif;
+    transition: 0.5s ease-out;
+    font-weight: 700;
+    cursor: pointer;
+    color: #fff;
 }
 .navClass li:hover {
-  color: #c70039;
+    color: #c70039;
 }
 .activeNav {
-  color: #c70039;
-  font-family: Arial, Helvetica, sans-serif;
-  transition: 0.5s ease-out;
-  font-weight: 700;
-  cursor: pointer;
+    color: #c70039;
+    font-family: Arial, Helvetica, sans-serif;
+    transition: 0.5s ease-out;
+    font-weight: 700;
+    cursor: pointer;
 }
 
 .langDiv {
-  width: 70px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  color: #fff;
+    width: 70px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    color: #fff;
 }
 .langStick {
-  background-color: #fff;
-  width: 2px;
+    background-color: #fff;
+    width: 2px;
 }
 
 .langDiv button {
-  background-color: #000;
-  border: none;
-  color: #fff;
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 14px;
-  cursor: pointer;
-  transition: 0.5s ease-out;
+    background-color: #000;
+    border: none;
+    color: #fff;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.5s ease-out;
 }
 .langDiv button:hover {
-  color: #c70039;
+    color: #c70039;
 }

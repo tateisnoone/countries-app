@@ -1,75 +1,75 @@
 .container {
-  max-width: 1110px;
-  width: 90%;
-  margin: 0 auto;
+    max-width: 1110px;
+    width: 90%;
+    margin: 0 auto;
 }
 .cardCreateForm {
-  height: 500px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: center;
-  margin-bottom: 90px;
+    height: 500px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    margin-bottom: 90px;
 }
 .country_form {
-  font-family: Arial, Helvetica, sans-serif;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: flex-start;
-  gap: 20px;
+    font-family: Arial, Helvetica, sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: flex-start;
+    gap: 20px;
 }
 .cardCreateForm h1 {
-  color: #fff;
-  font-size: 32px;
-  font-weight: 500;
-  line-height: normal;
-  font-family: Arial, Helvetica, sans-serif;
-  margin-bottom: 25px;
+    color: #fff;
+    font-size: 32px;
+    font-weight: 500;
+    line-height: normal;
+    font-family: Arial, Helvetica, sans-serif;
+    margin-bottom: 25px;
 }
 
 label {
-  color: #fff;
+    color: #fff;
 }
 input {
-  padding: 10px;
-  font-family: Arial, Helvetica, sans-serif;
-  width: 540px;
-  height: 50px;
-  border: 1px solid white;
-  border-radius: 5px;
-  background: #f1f1f1;
+    padding: 10px;
+    font-family: Arial, Helvetica, sans-serif;
+    width: 540px;
+    height: 50px;
+    border: 1px solid white;
+    border-radius: 5px;
+    background: #f1f1f1;
 }
 
 .langFields {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  width: 550px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 550px;
 }
 .langFields input {
-  width: 200px;
+    width: 200px;
 }
 .langFields label {
-  width: 45px;
-  margin-right: 10px;
+    width: 45px;
+    margin-right: 10px;
 }
 .country_button {
-  cursor: pointer;
-  font-size: 16px;
-  font-weight: 700;
-  line-height: 1.33;
-  width: 100%;
-  height: 50px;
-  border: none;
-  color: #fff;
-  border-radius: 5px;
-  background-color: #c70039;
-  transition: 0.5s ease-out;
-  margin-top: 15px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.33;
+    width: 100%;
+    height: 50px;
+    border: none;
+    color: #fff;
+    border-radius: 5px;
+    background-color: #c70039;
+    transition: 0.5s ease-out;
+    margin-top: 15px;
 }
 .country_button:hover {
-  background-color: #d92558;
-  color: #fff;
+    background-color: #d92558;
+    color: #fff;
 }

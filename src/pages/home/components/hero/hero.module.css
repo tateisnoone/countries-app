@@ -1,72 +1,72 @@
 .container {
-  max-width: 1110px;
-  width: 90%;
-  margin: 0 auto;
+    max-width: 1110px;
+    width: 90%;
+    margin: 0 auto;
 }
 .hero {
-  height: 500px;
-  background-image: url("../../../../assets/Homelander.jpg");
-  background-color: grey;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  padding: 40px;
-  display: flex;
-  align-items: center;
+    height: 500px;
+    background-image: url("../../../../assets/Homelander.jpg");
+    background-color: grey;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    padding: 40px;
+    display: flex;
+    align-items: center;
 }
 .aboutUs {
-  width: 400px;
-  color: #fff;
-  height: 250px;
-  font-family: Arial, Helvetica, sans-serif;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+    width: 400px;
+    color: #fff;
+    height: 250px;
+    font-family: Arial, Helvetica, sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 .aboutUs h1 {
-  font-weight: 700;
-  font-size: 40px;
-  line-height: 45px;
+    font-weight: 700;
+    font-size: 40px;
+    line-height: 45px;
 }
 .aboutUs p {
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 25px;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 25px;
 }
 
 .geAboutUs {
-  width: 400px;
-  color: #fff;
-  height: 300px;
-  font-family: Arial, Helvetica, sans-serif;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+    width: 400px;
+    color: #fff;
+    height: 300px;
+    font-family: Arial, Helvetica, sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 .geAboutUs h1 {
-  font-weight: 700;
-  font-size: 28px;
-  line-height: 34px;
+    font-weight: 700;
+    font-size: 28px;
+    line-height: 34px;
 }
 .geAboutUs p {
-  font-weight: 400;
-  font-size: 18px;
-  line-height: 25px;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 25px;
 }
 
 .heroButton {
-  cursor: pointer;
-  font-size: 16px;
-  font-weight: 700;
-  line-height: 1.33;
-  width: 151px;
-  height: 50px;
-  border: none;
-  color: #fff;
-  border-radius: 4px;
-  background-color: #c70039;
-  transition: 0.5s ease-out;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.33;
+    width: 151px;
+    height: 50px;
+    border: none;
+    color: #fff;
+    border-radius: 4px;
+    background-color: #c70039;
+    transition: 0.5s ease-out;
 }
 .heroButton:hover {
-  background-color: #d92558;
+    background-color: #d92558;
 }

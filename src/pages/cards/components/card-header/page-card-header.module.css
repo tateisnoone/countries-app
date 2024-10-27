@@ -1,7 +1,7 @@
 .cardHeader img {
-  height: 150px;
-  width: 300px;
-  overflow: hidden;
-  border-top-left-radius: 7px;
-  border-top-right-radius: 7px;
+    height: 150px;
+    width: 300px;
+    overflow: hidden;
+    border-top-left-radius: 7px;
+    border-top-right-radius: 7px;
 }

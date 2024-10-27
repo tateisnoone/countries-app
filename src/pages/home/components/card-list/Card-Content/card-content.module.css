@@ -1,14 +1,14 @@
 .cardContent {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  height: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    height: 100px;
 }
 .cardContent h1 {
-  font-size: 28px;
-  color: #c70039;
+    font-size: 28px;
+    color: #c70039;
 }
 .cardContent p {
-  font-size: 20px;
+    font-size: 20px;
 }

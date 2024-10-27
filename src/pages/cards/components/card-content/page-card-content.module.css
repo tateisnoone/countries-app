@@ -1,41 +1,41 @@
 .pageCardContent {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  height: 100px;
-  padding: 10px;
-  margin-top: -25px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    height: 100px;
+    padding: 10px;
+    margin-top: -25px;
 }
 .pageCardContent h1 {
-  font-size: 28px;
-  color: #c70039;
-  margin-bottom: 10px;
+    font-size: 28px;
+    color: #c70039;
+    margin-bottom: 10px;
 }
 .pageCardContent p {
-  font-size: 20px;
-  line-height: 24px;
+    font-size: 20px;
+    line-height: 24px;
 }
 
 .vote_text {
-  font-size: 18px;
-  font-style: italic;
-  margin-top: 10px;
+    font-size: 18px;
+    font-style: italic;
+    margin-top: 10px;
 }
 .vote_text span {
-  color: #c70039;
-  cursor: pointer;
+    color: #c70039;
+    cursor: pointer;
 }
 
 .vote_text_ge {
-  font-family: Georgia, "Times New Roman", Times, serif;
-  font-size: 15px;
-  font-style: italic;
-  margin-top: 5px;
-  text-align: center;
-  line-height: 20px;
+    font-family: Georgia, "Times New Roman", Times, serif;
+    font-size: 15px;
+    font-style: italic;
+    margin-top: 5px;
+    text-align: center;
+    line-height: 20px;
 }
 .vote_text_ge span {
-  color: #c70039;
-  cursor: pointer;
+    color: #c70039;
+    cursor: pointer;
 }
