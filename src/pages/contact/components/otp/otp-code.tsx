@@ -21,7 +21,6 @@ const Otp: FC<OtpProps> = ({ numberOfInputs }) => {
         newInputs[index] = value;
         setInputs(newInputs);
 
-      
         if (value && index < inputs.length - 1) {
             inputRefs.current[index + 1]?.focus();
         } else if (value && index === inputs.length - 1) {

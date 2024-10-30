@@ -27,7 +27,6 @@ const CardPageSection: React.FC = () => {
         deleted: boolean;
     }
 
-    
     const handleCardVote = (id: string) => {
         return () => {
             dispatch({ type: "vote", payload: { id } });
