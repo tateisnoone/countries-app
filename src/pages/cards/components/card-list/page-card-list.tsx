@@ -18,15 +18,16 @@ const CardPageSection: React.FC = () => {
     interface Card {
         id: string;
         name: string;
-        nameGe: string; // Add this line for Georgian name
+        nameGe: string;
         population: number;
         capital: string;
-        capitalGe: string; // Add this line for Georgian capital
+        capitalGe: string;
         image: string;
         vote: number;
         deleted: boolean;
     }
 
+    
     const handleCardVote = (id: string) => {
         return () => {
             dispatch({ type: "vote", payload: { id } });

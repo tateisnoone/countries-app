@@ -8,11 +8,26 @@ type cardsReducerInitialState = {
     vote: number;
     deleted: boolean;
 }[];
+type CardsAction =
+    | { type: "vote"; payload: { id: string } }
+    | { type: "sort"; payload: { sortType: "asc" | "desc" } }
+    | {
+          type: "create";
+          payload: {
+              cardFields: {
+                  name: string;
+                  population: number;
+                  capital: string;
+                  image: string;
+              };
+          };
+      }
+    | { type: "delete"; payload: { id: string } }
+    | { type: "recover"; payload: { id: string } };
 
 export const cardsReducer = (
     cardList: cardsReducerInitialState,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    action: any,
+    action: CardsAction,
 ) => {
     if (action.type === "vote") {
         const updatedCardList = cardList.map((card) => {
