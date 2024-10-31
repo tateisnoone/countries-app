@@ -9,14 +9,11 @@ import { cardsReducer } from "./reducer/reducer";
 import { cardsInitialState } from "./reducer/state";
 import { useParams } from "react-router-dom";
 
-
 const CardPageSection: React.FC = () => {
     const { lang } = useParams<{ lang: "en" | "ge" }>();
     const [cardValidationErrMsg, setCardValidationErrMsg] = useState("");
     const [cardList, dispatch] = useReducer(cardsReducer, cardsInitialState);
     const selectedLang = lang || "en";
-
-  
 
     interface Card {
         id: string;
@@ -67,7 +64,12 @@ const CardPageSection: React.FC = () => {
         if (cardFields.capital.length < 2) {
             return;
         }
-        dispatch({ type: "create", payload: { cardFields } });
+        dispatch({
+            type: "create",
+            payload: {
+                cardFields: { ...cardFields, nameGe: "", capitalGe: "" },
+            },
+        });
     };
 
     const handleCardDelete = (id: string) => {

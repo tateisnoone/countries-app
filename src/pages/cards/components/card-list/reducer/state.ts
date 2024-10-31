@@ -3,7 +3,8 @@ import GeorgiaFlag from "@/assets/georgiaFlag.jpeg";
 import SouthKoreaFlag from "@/assets/southkoreaFlag.jpeg";
 import NorwayFlag from "@/assets/norwayFlag.jpeg";
 import UnitedKingdomFlag from "@/assets/unitedkingdomFlag.jpeg";
-export const cardsInitialState = [
+import { CardsReducerInitialState } from "./reducer";
+export const cardsInitialState: CardsReducerInitialState = [
     {
         name: "USA",
         nameGe: "აშშ",

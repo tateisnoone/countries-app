@@ -1,4 +1,4 @@
-type cardsReducerInitialState = {
+export type CardsReducerInitialState = {
     id: string;
     name: string;
     nameGe: string;
@@ -8,6 +8,7 @@ type cardsReducerInitialState = {
     image: string;
     vote: number;
     deleted: boolean;
+    saves: string;
 }[];
 type CardsAction =
     | { type: "vote"; payload: { id: string } }
@@ -28,7 +29,7 @@ type CardsAction =
     | { type: "recover"; payload: { id: string } };
 
 export const cardsReducer = (
-    cardList: cardsReducerInitialState,
+    cardList: CardsReducerInitialState,
     action: CardsAction,
 ) => {
     if (action.type === "vote") {
@@ -58,11 +59,14 @@ export const cardsReducer = (
     }
 
     if (action.type === "create") {
-        const updatedCardsList = [
+        const updatedCardsList: CardsReducerInitialState = [
             ...cardList,
             {
                 ...action.payload.cardFields,
                 vote: 0,
+                deleted: false,
+                image: "",
+                saves: "",
                 id: (Number(cardList.at(-1)?.id) + 1).toString(),
             },
         ];
