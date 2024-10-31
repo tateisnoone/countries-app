@@ -1,10 +1,11 @@
 type cardsReducerInitialState = {
+    id: string;
     name: string;
+    nameGe: string;
     population: number;
     capital: string;
-    saves: string;
+    capitalGe: string;
     image: string;
-    id: string;
     vote: number;
     deleted: boolean;
 }[];
@@ -16,9 +17,10 @@ type CardsAction =
           payload: {
               cardFields: {
                   name: string;
+                  nameGe: string;
                   population: number;
                   capital: string;
-                  image: string;
+                  capitalGe: string;
               };
           };
       }

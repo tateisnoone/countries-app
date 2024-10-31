@@ -9,11 +9,14 @@ import { cardsReducer } from "./reducer/reducer";
 import { cardsInitialState } from "./reducer/state";
 import { useParams } from "react-router-dom";
 
+
 const CardPageSection: React.FC = () => {
     const { lang } = useParams<{ lang: "en" | "ge" }>();
     const [cardValidationErrMsg, setCardValidationErrMsg] = useState("");
     const [cardList, dispatch] = useReducer(cardsReducer, cardsInitialState);
     const selectedLang = lang || "en";
+
+  
 
     interface Card {
         id: string;

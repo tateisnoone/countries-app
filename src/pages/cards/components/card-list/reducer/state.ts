@@ -14,6 +14,7 @@ export const cardsInitialState = [
         image: USAFlag,
         id: "1",
         vote: 0,
+        deleted: false,
     },
     {
         name: "Georgia",
@@ -25,6 +26,7 @@ export const cardsInitialState = [
         saves: "10,000",
         id: "2",
         vote: 0,
+        deleted: false,
     },
     {
         name: "South Korea",
@@ -36,6 +38,7 @@ export const cardsInitialState = [
         image: SouthKoreaFlag,
         id: "3",
         vote: 0,
+        deleted: false,
     },
     {
         name: "Norway",
@@ -47,6 +50,7 @@ export const cardsInitialState = [
         image: NorwayFlag,
         id: "4",
         vote: 0,
+        deleted: false,
     },
     {
         name: "United Kingdom",
@@ -58,5 +62,6 @@ export const cardsInitialState = [
         image: UnitedKingdomFlag,
         id: "5",
         vote: 0,
+        deleted: false,
     },
 ];
