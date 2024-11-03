@@ -13,9 +13,9 @@ const CardPageSectionTest: React.FC = () => {
     const { lang } = useParams<{ lang: "en" | "ge" }>();
     const [cardValidationErrMsg, setCardValidationErrMsg] = useState("");
     const selectedLang = lang || "en";
-    //  const [editingCardId, setEditingCardId] = useState<string | null>(null); // State for the editing card ID
+    const [editableCard, setEditableCard] = useState<Card | null>(null);
+
     const formRef = useRef<HTMLDivElement | null>(null); // Create a ref for the form
-    //  const [initialValues, setInitialValues] = useState<Card | null>(null);
 
     interface Card {
         id: string;
@@ -27,6 +27,7 @@ const CardPageSectionTest: React.FC = () => {
         image: string;
         vote: number;
     }
+
     useEffect(() => {
         axios.get("http://localhost:3000/countries").then((res) => {
             setCardList(res.data);
@@ -50,8 +51,7 @@ const CardPageSectionTest: React.FC = () => {
             copiedActiveCards.sort((a, b) => b.vote - a.vote);
         }
 
-        const sortedCardList = [...copiedActiveCards];
-        setCardList(sortedCardList);
+        setCardList(copiedActiveCards);
     };
 
     const handleCardCreate = (cardFields: {
@@ -62,6 +62,7 @@ const CardPageSectionTest: React.FC = () => {
         capitalGe: string;
         image: string;
     }) => {
+        // Validation
         if (cardFields.name.length > 20) {
             return setCardValidationErrMsg(
                 "Country name should contain less than 20 characters",
@@ -72,7 +73,7 @@ const CardPageSectionTest: React.FC = () => {
         }
         if (cardFields.population < 700) {
             return setCardValidationErrMsg(
-                "Population should should be more than 700",
+                "Population should be more than 700",
             );
         } else setCardValidationErrMsg("");
         if (cardFields.capital.length > 20) {
@@ -83,21 +84,38 @@ const CardPageSectionTest: React.FC = () => {
         if (cardFields.capital.length < 2) {
             return;
         }
-        const newCardId =
-            cardList.length > 0
-                ? (Number(cardList.at(-1)?.id) + 1).toString()
-                : "1"; // Default to "1" if list is empty
 
-        const newCard = {
-            ...cardFields,
-            id: newCardId,
-            vote: 0,
-            deleted: false,
-        };
+        if (editableCard) {
+            const updatedCard = { ...editableCard, ...cardFields };
+            axios
+                .put(
+                    `http://localhost:3000/countries/${editableCard.id}`,
+                    updatedCard,
+                )
+                .then(() => {
+                    setCardList((prevCardList) =>
+                        prevCardList.map((card) =>
+                            card.id === editableCard.id ? updatedCard : card,
+                        ),
+                    );
+                    setEditableCard(null); // Reset to create mode
+                });
+        } else {
+            const newCardId =
+                cardList.length > 0
+                    ? (Number(cardList.at(-1)?.id) + 1).toString()
+                    : "1"; // Default to "1" if list is empty
 
-        axios.post("http://localhost:3000/countries", newCard).then(() => {
-            setCardList((prevCardList) => [...prevCardList, newCard]);
-        });
+            const newCard = {
+                ...cardFields,
+                id: newCardId,
+                vote: 0,
+            };
+
+            axios.post("http://localhost:3000/countries", newCard).then(() => {
+                setCardList((prevCardList) => [...prevCardList, newCard]);
+            });
+        }
     };
 
     const handleCardDelete = (id: string) => {
@@ -108,81 +126,63 @@ const CardPageSectionTest: React.FC = () => {
         });
     };
 
-    // const handleEditClick = (id: string) => {
-    //     setEditingCardId(id);
-    //     const cardToEdit = cardList.find((card) => card.id === id);
-    //     if (cardToEdit) {
-    //
-    //         formRef.current?.scrollIntoView({ behavior: "smooth" });
-    //         // Optionally, you can add logic here to fill the form if you implement it
-    //     }
-    // };
+    const handleEditClick = (id: string) => {
+        const cardToEdit = cardList.find((card) => card.id === id);
+        if (cardToEdit) {
+            setEditableCard(cardToEdit);
+            formRef.current?.scrollIntoView({ behavior: "smooth" });
+        }
+    };
+
     const handleNameLang = (selectedLang: string, card: Card) => {
-        if (selectedLang === "ge") {
-            return card.nameGe;
-        } else return card.name;
+        return selectedLang === "ge" ? card.nameGe : card.name;
     };
 
     const handleCapitalLang = (selectedLang: string, card: Card) => {
-        if (selectedLang === "ge") {
-            return card.capitalGe;
-        } else return card.capital;
+        return selectedLang === "ge" ? card.capitalGe : card.capital;
     };
+
     return (
         <>
             <div ref={formRef}>
                 <CardCreateForm
                     errMsg={cardValidationErrMsg}
                     onCardCreate={handleCardCreate}
-                    //  initialValues={initialValues}
+                    initialValues={editableCard || undefined}
                 />
             </div>
             <div className={`${styles.cardSection} ${styles.container}`}>
                 <p className={styles.sort}>
                     Sort by <span> </span>
-                    <button
-                        onClick={() => {
-                            handleCardsSort("desc");
-                        }}
-                    >
+                    <button onClick={() => handleCardsSort("desc")}>
                         Most Voted
                     </button>
                     /
-                    <button
-                        onClick={() => {
-                            handleCardsSort("asc");
-                        }}
-                    >
+                    <button onClick={() => handleCardsSort("asc")}>
                         Least Voted
                     </button>
                 </p>
                 <div className={styles.right}>
-                    {cardList.map((card) => {
-                        return (
-                            <PageCard key={card.id} id={card.id}>
-                                <PageCardHeader
-                                    image={card.image}
-                                    altText={`${card.name} Flag`}
-                                />
-                                <PageCardContent
-                                    heading={handleNameLang(selectedLang, card)}
-                                    population={card.population}
-                                    capital={handleCapitalLang(
-                                        selectedLang,
-                                        card,
-                                    )}
-                                    onVote={() => handleCardVote(card.id)}
-                                    voteCount={card.vote}
-                                />
-
-                                <PageCardFooter
-                                    id={card.id}
-                                    onDelete={handleCardDelete}
-                                    //onEdit={handleEditClick}
-                                />
-                            </PageCard>
-                        );
-                    })}
+                    {cardList.map((card) => (
+                        <PageCard key={card.id} id={card.id}>
+                            <PageCardHeader
+                                image={card.image}
+                                altText={`${card.name} Flag`}
+                            />
+                            <PageCardContent
+                                heading={handleNameLang(selectedLang, card)}
+                                population={card.population}
+                                capital={handleCapitalLang(selectedLang, card)}
+                                onVote={() => handleCardVote(card.id)}
+                                voteCount={card.vote}
+                            />
+                            <PageCardFooter
+                                id={card.id}
+                                onDelete={handleCardDelete}
+                                onEdit={handleEditClick}
+                            />
+                        </PageCard>
+                    ))}
                 </div>
             </div>
         </>

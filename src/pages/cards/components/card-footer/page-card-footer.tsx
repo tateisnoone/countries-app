@@ -5,9 +5,9 @@ const PageCardFooter: React.FC<
     React.PropsWithChildren<{
         id: string;
         onDelete: (id: string) => void;
-        // onEdit: (id: string) => void;
+        onEdit: (id: string) => void;
     }>
-> = ({ id, onDelete }) => {
+> = ({ id, onDelete, onEdit }) => {
     const { lang } = useParams<{ lang: "en" | "ge" }>();
     const selectedLang = lang || "en";
     const handleLangChange = {
@@ -30,7 +30,7 @@ const PageCardFooter: React.FC<
                 {handleLangChange[selectedLang].delete}
             </span>
             <div className={styles.line_div}></div>
-            <span className={styles.for_delete}>
+            <span className={styles.for_delete} onClick={() => onEdit(id)}>
                 {handleLangChange[selectedLang].edit}
             </span>
         </div>

@@ -12,7 +12,8 @@
         "format": "prettier . --write",
         "preview": "vite preview",
         "prepare": "husky",
-        "run-db": "npx json-server database.json"
+        "run-db": "npx json-server database.json",
+        "seed-db": "node db.js"
     },
     "dependencies": {
         "axios": "^1.7.7",
