@@ -14,7 +14,7 @@ const PageCardContent: React.FC<{
         en: {
             population: "Population:",
             capital: "Capital:",
-            text: "I'm from",
+            text: `I'm from ${heading}`,
             vote: "Vote",
         },
         ge: {

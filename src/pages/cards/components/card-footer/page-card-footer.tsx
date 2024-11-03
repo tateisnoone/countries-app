@@ -5,43 +5,34 @@ const PageCardFooter: React.FC<
     React.PropsWithChildren<{
         id: string;
         onDelete: (id: string) => void;
-        onRecover: (id: string) => void;
-        isDeleted: boolean;
+        // onEdit: (id: string) => void;
     }>
-> = ({ id, onDelete, onRecover, isDeleted }) => {
+> = ({ id, onDelete }) => {
     const { lang } = useParams<{ lang: "en" | "ge" }>();
     const selectedLang = lang || "en";
     const handleLangChange = {
         en: {
             learnmore: "Learn More",
             delete: "Delete",
-            recover: "Recover",
+            edit: "Edit",
         },
         ge: {
             learnmore: "გაიგე მეტი",
             delete: "წაშლა",
-            recover: "აღდგენა",
+            edit: "შეცვლა",
         },
     };
     return (
         <div className={styles.cardFooter}>
             <Link to={`${id}`}>{handleLangChange[selectedLang].learnmore}</Link>
             <div className={styles.line_div}></div>
-            {isDeleted ? (
-                <span
-                    className={styles.for_recover}
-                    onClick={() => onRecover(id)}
-                >
-                    {handleLangChange[selectedLang].recover}
-                </span>
-            ) : (
-                <span
-                    className={styles.for_delete}
-                    onClick={() => onDelete(id)}
-                >
-                    {handleLangChange[selectedLang].delete}
-                </span>
-            )}
+            <span className={styles.for_delete} onClick={() => onDelete(id)}>
+                {handleLangChange[selectedLang].delete}
+            </span>
+            <div className={styles.line_div}></div>
+            <span className={styles.for_delete}>
+                {handleLangChange[selectedLang].edit}
+            </span>
         </div>
     );
 };

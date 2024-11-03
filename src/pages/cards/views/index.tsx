@@ -1,13 +1,13 @@
 import { lazy } from "react";
 
-const LazyCardPageSection = lazy(
-    () => import("../components/card-list/page-card-list"),
+const LazyCardPageSectionTest = lazy(
+    () => import("../components/card-list-test/test"),
 );
 
 const CardsPageListView = () => {
     return (
         <>
-            <LazyCardPageSection />
+            <LazyCardPageSectionTest />
         </>
     );
 };

@@ -1,5 +1,5 @@
 import { ChangeEvent, FormEvent, useState } from "react";
-import styles from "./card-create-form.module.css";
+import styles from "./card-edit.module.css";
 type cardCreateProps = {
     onCardCreate: (cardFields: {
         name: string;
@@ -9,14 +9,10 @@ type cardCreateProps = {
         capitalGe: string;
         image: string;
     }) => void;
-    //  initialValues;
     errMsg: string;
 };
 
-const CardCreateForm: React.FC<cardCreateProps> = ({
-    onCardCreate,
-    errMsg,
-}) => {
+const CardEditForm: React.FC<cardCreateProps> = ({ onCardCreate, errMsg }) => {
     const [nameErrMsg, setNameErrMsg] = useState("");
     const [capitalErrMsg, setCapitalErrMsg] = useState("");
     const [name, setName] = useState("");
@@ -25,24 +21,6 @@ const CardCreateForm: React.FC<cardCreateProps> = ({
     const [capital, setCapital] = useState("");
     const [capitalGe, setGeCapital] = useState("");
     const [image, setImage] = useState<string>("");
-    // useEffect(() => {
-    //     if (initialValues) {
-    //         setName(initialValues.name);
-    //         setNameGe(initialValues.nameGe);
-    //         setPopulation(initialValues.population);
-    //         setCapital(initialValues.capital);
-    //         setCapitalGe(initialValues.capitalGe);
-    //         setImage(initialValues.image);
-    //     } else {
-    //         // Reset the fields if not editing
-    //         setName("");
-    //         setNameGe("");
-    //         setPopulation(0);
-    //         setCapital("");
-    //         setCapitalGe("");
-    //         setImage("");
-    //     }
-    // }, [initialValues]);
 
     const handleUpload = (e: ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
@@ -172,4 +150,4 @@ const CardCreateForm: React.FC<cardCreateProps> = ({
     );
 };
 
-export default CardCreateForm;
+export default CardEditForm;
