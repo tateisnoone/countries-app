@@ -98,13 +98,13 @@ const CardPageSectionTest: React.FC = () => {
                             card.id === editableCard.id ? updatedCard : card,
                         ),
                     );
-                    setEditableCard(null); // Reset to create mode
+                    setEditableCard(null);
                 });
         } else {
             const newCardId =
-                cardList.length > 0
+                cardList.length > 0 && !isNaN(Number(cardList.at(-1)?.id))
                     ? (Number(cardList.at(-1)?.id) + 1).toString()
-                    : "1"; // Default to "1" if list is empty
+                    : "1";
 
             const newCard = {
                 ...cardFields,
