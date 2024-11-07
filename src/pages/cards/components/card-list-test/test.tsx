@@ -12,7 +12,7 @@ import {
     cardUpdateApi,
     getCountriesApi,
 } from "@/api/countries";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
 const CardPageSectionTest: React.FC = () => {
     const [cardList, setCardList] = useState<Card[]>([]);
@@ -21,7 +21,7 @@ const CardPageSectionTest: React.FC = () => {
     const selectedLang = lang || "en";
     const [editableCard, setEditableCard] = useState<Card | null>(null);
 
-    const formRef = useRef<HTMLDivElement | null>(null); // Create a ref for the form
+    const formRef = useRef<HTMLDivElement | null>(null);
 
     interface Card {
         id: string;
@@ -34,7 +34,7 @@ const CardPageSectionTest: React.FC = () => {
         vote: number;
     }
 
-    const { data, isLoading, isError, refetch } = useQuery({
+    const { data, isLoading, isError, refetch } = useQuery<Card[]>({
         queryKey: ["countries-list"],
         queryFn: getCountriesApi,
         retry: 0,
@@ -43,18 +43,8 @@ const CardPageSectionTest: React.FC = () => {
         setCardList(data ?? []);
     }, [data]);
     console.log(data, isLoading, isError);
-    // useEffect(() => {
-    //     const fetchCountries = async () => {
-    //         try {
-    //             const countries = await getCountriesApi();
-    //             setCardList(countries);
-    //         } catch (error) {
-    //             console.log("error:", error);
-    //         }
-    //     };
-    //     fetchCountries();
-    // }, []);
 
+    const { mutate } = useMutation({ mutationFn: cardDeleteApi });
     const handleCardVote = (id: string) => {
         setCardList((prevCards) =>
             prevCards.map((card) =>
@@ -120,8 +110,8 @@ const CardPageSectionTest: React.FC = () => {
             cardUpdate();
         } else {
             const newCardId =
-                cardList.length > 0 && !isNaN(Number(cardList.at(-1)?.id))
-                    ? (Number(cardList.at(-1)?.id) + 1).toString()
+                data && data.length > 0 && !isNaN(Number(data?.at(-1)?.id))
+                    ? (Number(data?.at(-1)?.id) + 1).toString()
                     : "1";
 
             const newCard = {
@@ -141,17 +131,18 @@ const CardPageSectionTest: React.FC = () => {
         }
     };
 
-    const handleCardDelete = async (id: string) => {
-        try {
-            await cardDeleteApi(id);
-            refetch();
-        } catch (error) {
-            console.log("error:", error);
-        }
+    const handleCardDelete = (id: string) => {
+        mutate(id, {
+            onSuccess: () => {
+                refetch();
+            },
+            onError: (error) => {
+                console.log("Error deleting card:", error);
+            },
+        });
     };
-
     const handleEditClick = (id: string) => {
-        const cardToEdit = cardList.find((card) => card.id === id);
+        const cardToEdit = data?.find((card) => card.id === id);
         if (cardToEdit) {
             setEditableCard(cardToEdit);
             formRef.current?.scrollIntoView({ behavior: "smooth" });
