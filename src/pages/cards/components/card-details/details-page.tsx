@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import styles from "./details-page.module.css";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import { getCountriesApi } from "@/api/countries";
 interface Card {
     id: string;
     name: string;
@@ -11,17 +11,23 @@ interface Card {
     capitalGe: string;
     image: string;
     vote: number;
-    deleted: boolean;
 }
 
 const CardDetailsPage = () => {
     const [cardList, setCardList] = useState<Card[]>([]);
     const { id } = useParams<{ id: string }>();
+
     useEffect(() => {
-        axios.get("http://localhost:3000/countries").then((res) => {
-            setCardList(res.data);
-        });
-    });
+        const fetchCountries = async () => {
+            try {
+                const response = await getCountriesApi();
+                setCardList(response);
+            } catch (error) {
+                console.log("error:", error);
+            }
+        };
+        fetchCountries();
+    }, []);
     const cardInfo = cardList.find((country) => country.id === id);
 
     if (!cardInfo) {

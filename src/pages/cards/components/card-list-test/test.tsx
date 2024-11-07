@@ -6,7 +6,13 @@ import PageCard from "../card/page-card";
 import { useEffect, useRef, useState } from "react";
 import CardCreateForm from "../card-create-form/card-create-form";
 import { useParams } from "react-router-dom";
-import axios from "axios";
+import {
+    addCardApi,
+    cardDeleteApi,
+    cardUpdateApi,
+    getCountriesApi,
+} from "@/api/countries";
+import { useQuery } from "@tanstack/react-query";
 
 const CardPageSectionTest: React.FC = () => {
     const [cardList, setCardList] = useState<Card[]>([]);
@@ -28,11 +34,26 @@ const CardPageSectionTest: React.FC = () => {
         vote: number;
     }
 
+    const { data, isLoading, isError, refetch } = useQuery({
+        queryKey: ["countries-list"],
+        queryFn: getCountriesApi,
+        retry: 0,
+    });
     useEffect(() => {
-        axios.get("http://localhost:3000/countries").then((res) => {
-            setCardList(res.data);
-        });
-    }, []);
+        setCardList(data ?? []);
+    }, [data]);
+    console.log(data, isLoading, isError);
+    // useEffect(() => {
+    //     const fetchCountries = async () => {
+    //         try {
+    //             const countries = await getCountriesApi();
+    //             setCardList(countries);
+    //         } catch (error) {
+    //             console.log("error:", error);
+    //         }
+    //     };
+    //     fetchCountries();
+    // }, []);
 
     const handleCardVote = (id: string) => {
         setCardList((prevCards) =>
@@ -86,20 +107,17 @@ const CardPageSectionTest: React.FC = () => {
         }
 
         if (editableCard) {
-            const updatedCard = { ...editableCard, ...cardFields };
-            axios
-                .put(
-                    `http://localhost:3000/countries/${editableCard.id}`,
-                    updatedCard,
-                )
-                .then(() => {
-                    setCardList((prevCardList) =>
-                        prevCardList.map((card) =>
-                            card.id === editableCard.id ? updatedCard : card,
-                        ),
-                    );
+            const cardUpdate = async () => {
+                const updatedCard = { ...editableCard, ...cardFields };
+                try {
+                    await cardUpdateApi(updatedCard);
+                    refetch();
                     setEditableCard(null);
-                });
+                } catch (error) {
+                    console.log("error:", error);
+                }
+            };
+            cardUpdate();
         } else {
             const newCardId =
                 cardList.length > 0 && !isNaN(Number(cardList.at(-1)?.id))
@@ -111,19 +129,25 @@ const CardPageSectionTest: React.FC = () => {
                 id: newCardId,
                 vote: 0,
             };
-
-            axios.post("http://localhost:3000/countries", newCard).then(() => {
-                setCardList((prevCardList) => [...prevCardList, newCard]);
-            });
+            const addCard = async () => {
+                try {
+                    await addCardApi(newCard);
+                    refetch();
+                } catch (error) {
+                    console.log("error:", error);
+                }
+            };
+            addCard();
         }
     };
 
-    const handleCardDelete = (id: string) => {
-        axios.delete(`http://localhost:3000/countries/${id}`).then(() => {
-            setCardList((prevCardList) =>
-                prevCardList.filter((card) => card.id !== id),
-            );
-        });
+    const handleCardDelete = async (id: string) => {
+        try {
+            await cardDeleteApi(id);
+            refetch();
+        } catch (error) {
+            console.log("error:", error);
+        }
     };
 
     const handleEditClick = (id: string) => {
@@ -163,6 +187,12 @@ const CardPageSectionTest: React.FC = () => {
                     </button>
                 </p>
                 <div className={styles.right}>
+                    {isLoading && (
+                        <div className={styles.loading}> Loading...</div>
+                    )}
+                    {isError && (
+                        <div className={styles.error}>List can't be loaded</div>
+                    )}
                     {cardList.map((card) => (
                         <PageCard key={card.id} id={card.id}>
                             <PageCardHeader
