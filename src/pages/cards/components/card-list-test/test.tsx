@@ -13,6 +13,8 @@ import {
     getCountriesApi,
 } from "@/api/countries";
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { useVirtualizer } from "@tanstack/react-virtual";
+import { useSearchParams } from "react-router-dom";
 
 const CardPageSectionTest: React.FC = () => {
     const [cardList, setCardList] = useState<Card[]>([]);
@@ -20,8 +22,9 @@ const CardPageSectionTest: React.FC = () => {
     const [cardValidationErrMsg, setCardValidationErrMsg] = useState("");
     const selectedLang = lang || "en";
     const [editableCard, setEditableCard] = useState<Card | null>(null);
-
+    const parentRef = useRef<HTMLDivElement | null>(null);
     const formRef = useRef<HTMLDivElement | null>(null);
+    const [searchParams, setSearchParams] = useSearchParams();
 
     interface Card {
         id: string;
@@ -34,35 +37,45 @@ const CardPageSectionTest: React.FC = () => {
         vote: number;
     }
 
+    const sortOrder = (searchParams.get("sortOrder") || "asc") as
+        | "asc"
+        | "desc";
+
     const { data, isLoading, isError, refetch } = useQuery<Card[]>({
-        queryKey: ["countries-list"],
-        queryFn: getCountriesApi,
+        queryKey: ["countries-list", sortOrder],
+        queryFn: () => getCountriesApi({ _order: sortOrder }),
         retry: 0,
     });
     useEffect(() => {
-        setCardList(data ?? []);
+        if (Array.isArray(data)) {
+            setCardList(data);
+        }
     }, [data]);
     console.log(data, isLoading, isError);
 
+    const rowVirtualizer = useVirtualizer({
+        count: cardList.length,
+        getScrollElement: () => parentRef.current,
+        estimateSize: () => 80,
+    });
     const { mutate } = useMutation({ mutationFn: cardDeleteApi });
-    const handleCardVote = (id: string) => {
-        setCardList((prevCards) =>
-            prevCards.map((card) =>
-                card.id === id ? { ...card, vote: card.vote + 1 } : card,
-            ),
-        );
+    const handleCardVote = async (id: string) => {
+        const updatedCard = cardList.find((card) => card.id === id);
+        if (updatedCard) {
+            const updatedData = { ...updatedCard, vote: updatedCard.vote + 1 };
+            try {
+                await cardUpdateApi(updatedData);
+                refetch();
+            } catch (error) {
+                console.error("Error updating card:", error);
+                throw new Error("error");
+            }
+        }
     };
 
     const handleCardsSort = (sortType: "asc" | "desc") => {
-        const copiedActiveCards = [...cardList];
-
-        if (sortType === "asc") {
-            copiedActiveCards.sort((a, b) => a.vote - b.vote);
-        } else if (sortType === "desc") {
-            copiedActiveCards.sort((a, b) => b.vote - a.vote);
-        }
-
-        setCardList(copiedActiveCards);
+        setSearchParams({ sortOrder: sortType });
+        refetch();
     };
 
     const handleCardCreate = (cardFields: {
@@ -105,6 +118,7 @@ const CardPageSectionTest: React.FC = () => {
                     setEditableCard(null);
                 } catch (error) {
                     console.log("error:", error);
+                    throw new Error("Failed to update countries card");
                 }
             };
             cardUpdate();
@@ -125,6 +139,7 @@ const CardPageSectionTest: React.FC = () => {
                     refetch();
                 } catch (error) {
                     console.log("error:", error);
+                    throw new Error("Can't add card");
                 }
             };
             addCard();
@@ -138,6 +153,7 @@ const CardPageSectionTest: React.FC = () => {
             },
             onError: (error) => {
                 console.log("Error deleting card:", error);
+                throw new Error("Can't delete card");
             },
         });
     };
@@ -169,41 +185,61 @@ const CardPageSectionTest: React.FC = () => {
             <div className={`${styles.cardSection} ${styles.container}`}>
                 <p className={styles.sort}>
                     Sort by <span> </span>
-                    <button onClick={() => handleCardsSort("desc")}>
+                    <button
+                        onClick={() => handleCardsSort("desc")}
+                        disabled={sortOrder === "desc"}
+                    >
                         Most Voted
                     </button>
                     /
-                    <button onClick={() => handleCardsSort("asc")}>
+                    <button
+                        onClick={() => handleCardsSort("asc")}
+                        disabled={sortOrder === "asc"}
+                    >
                         Least Voted
                     </button>
                 </p>
-                <div className={styles.right}>
-                    {isLoading && (
-                        <div className={styles.loading}> Loading...</div>
-                    )}
-                    {isError && (
-                        <div className={styles.error}>List can't be loaded</div>
-                    )}
-                    {cardList.map((card) => (
-                        <PageCard key={card.id} id={card.id}>
-                            <PageCardHeader
-                                image={card.image}
-                                altText={`${card.name} Flag`}
-                            />
-                            <PageCardContent
-                                heading={handleNameLang(selectedLang, card)}
-                                population={card.population}
-                                capital={handleCapitalLang(selectedLang, card)}
-                                onVote={() => handleCardVote(card.id)}
-                                voteCount={card.vote}
-                            />
-                            <PageCardFooter
-                                id={card.id}
-                                onDelete={handleCardDelete}
-                                onEdit={handleEditClick}
-                            />
-                        </PageCard>
-                    ))}
+                <div ref={parentRef} className={styles.virtualDivParent}>
+                    <div className={styles.virtualDiv}>
+                        {rowVirtualizer.getVirtualItems().map((virtualItem) => {
+                            const card = cardList[virtualItem.index];
+                            //  if (!card) return null;
+
+                            return (
+                                <div
+                                    key={card.id}
+                                    className={styles.divVirtual}
+                                >
+                                    <PageCard key={card.id} id={card.id}>
+                                        <PageCardHeader
+                                            image={card.image}
+                                            altText={`${card.name} Flag`}
+                                        />
+                                        <PageCardContent
+                                            heading={handleNameLang(
+                                                selectedLang,
+                                                card,
+                                            )}
+                                            population={card.population}
+                                            capital={handleCapitalLang(
+                                                selectedLang,
+                                                card,
+                                            )}
+                                            onVote={() =>
+                                                handleCardVote(card.id)
+                                            }
+                                            voteCount={card.vote}
+                                        />
+                                        <PageCardFooter
+                                            id={card.id}
+                                            onDelete={handleCardDelete}
+                                            onEdit={handleEditClick}
+                                        />
+                                    </PageCard>
+                                </div>
+                            );
+                        })}
+                    </div>
                 </div>
             </div>
         </>

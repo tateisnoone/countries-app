@@ -8,6 +8,7 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
+    scroll-behavior: smooth;
 }
 .sort {
     color: #fff;
@@ -47,4 +48,24 @@ button:hover {
 .error {
     color: #c70039;
     font-size: 18px;
+}
+.virtualDiv {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 100%;
+    margin-right: 15px;
+}
+
+.virtualDivParent {
+    width: 100%;
+    height: 400px;
+    overflow: auto;
+    scroll-behavior: smooth;
+    display: flex;
+}
+.divVirtual {
+    display: flex;
+    height: 400px;
 }

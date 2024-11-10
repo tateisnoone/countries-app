@@ -1,7 +1,8 @@
 import { useParams } from "react-router-dom";
 import styles from "./details-page.module.css";
 import { useEffect, useState } from "react";
-import { getCountriesApi } from "@/api/countries";
+import { cardDetailsApi } from "@/api/countries";
+import { useQuery } from "@tanstack/react-query";
 interface Card {
     id: string;
     name: string;
@@ -17,17 +18,15 @@ const CardDetailsPage = () => {
     const [cardList, setCardList] = useState<Card[]>([]);
     const { id } = useParams<{ id: string }>();
 
+    const { data, isLoading, isError } = useQuery<Card[]>({
+        queryKey: ["countries-list"],
+        queryFn: cardDetailsApi,
+        retry: 0,
+    });
     useEffect(() => {
-        const fetchCountries = async () => {
-            try {
-                const response = await getCountriesApi();
-                setCardList(response);
-            } catch (error) {
-                console.log("error:", error);
-            }
-        };
-        fetchCountries();
-    }, []);
+        setCardList(data ?? []);
+    }, [data]);
+    console.log(data, isLoading, isError);
     const cardInfo = cardList.find((country) => country.id === id);
 
     if (!cardInfo) {

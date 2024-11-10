@@ -1,23 +1,20 @@
 import axios from "axios";
-// const deleteAllCountries = async () => {
-//     try {
-//         const response = await axios.get("http://localhost:3000/countries");
-//         const countries = response.data;
-
-//         for (const country of countries) {
-//             await axios.delete(`http://localhost:3000/countries/${country.id}`);
-//             await new Promise((resolve) => setTimeout(resolve, 100)); // 100ms delay
-//         }
-
-//         console.log("All data deleted successfully.");
-//     } catch (error) {
-//         console.error("Error deleting data:", error.message);
-//     }
-// };
-
+import fs from "fs";
+const deleteAllCountries = async () => {
+    try {
+        if (fs.existsSync("database.json")) {
+            fs.writeFileSync("database.json", JSON.stringify([]));
+            console.log("All countries deleted");
+        } else {
+            console.log("File does not exist.");
+        }
+    } catch (error) {
+        console.log("Error deleting countries:", error);
+    }
+};
 const postCountries = async () => {
     try {
-        // deleteAllCountries();
+        await deleteAllCountries();
         const response = await axios.get("https://restcountries.com/v3.1/all");
         const countriesData = response.data.map((country) => ({
             id: country.cca2,
@@ -29,11 +26,14 @@ const postCountries = async () => {
             image: country.flags.svg || "",
             vote: 0,
         }));
-        countriesData.forEach((country) => {
-            axios.post("http://localhost:3000/countries", country);
-        });
+
+        fs.writeFileSync(
+            "database.json",
+            JSON.stringify({ countries: countriesData }, null, 2),
+        );
+        console.log("Countries added successfully");
     } catch (error) {
-        console.log("error:", error);
+        console.log("Error:", error);
     }
 };
 
