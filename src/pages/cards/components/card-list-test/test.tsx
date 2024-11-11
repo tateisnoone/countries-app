@@ -57,6 +57,7 @@ const CardPageSectionTest: React.FC = () => {
         count: cardList.length,
         getScrollElement: () => parentRef.current,
         estimateSize: () => 80,
+        overscan: 90,
     });
     const { mutate } = useMutation({ mutationFn: cardDeleteApi });
     const handleCardVote = async (id: string) => {
