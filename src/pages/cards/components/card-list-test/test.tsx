@@ -12,12 +12,12 @@ import {
     cardUpdateApi,
     getCountriesApi,
 } from "@/api/countries";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useMutation } from "@tanstack/react-query";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import { useSearchParams } from "react-router-dom";
 
 const CardPageSectionTest: React.FC = () => {
-    const [cardList, setCardList] = useState<Card[]>([]);
+    // const [cardList, setCardList] = useState<Card[]>([]);
     const { lang } = useParams<{ lang: "en" | "ge" }>();
     const [cardValidationErrMsg, setCardValidationErrMsg] = useState("");
     const selectedLang = lang || "en";
@@ -36,32 +36,69 @@ const CardPageSectionTest: React.FC = () => {
         image: string;
         vote: number;
     }
-
+    interface CountriesApiResponse {
+        rows: Card[];
+        nextOffset: number | null;
+    }
     const sortOrder = (searchParams.get("sortOrder") || "asc") as
         | "asc"
         | "desc";
 
-    const { data, isLoading, isError, refetch } = useQuery<Card[]>({
+    const {
+        data,
+        isLoading,
+        isError,
+        refetch,
+        fetchNextPage,
+        hasNextPage,
+        isFetchingNextPage,
+    } = useInfiniteQuery<CountriesApiResponse>({
         queryKey: ["countries-list", sortOrder],
-        queryFn: () => getCountriesApi({ _order: sortOrder }),
+        queryFn: ({ pageParam }) =>
+            getCountriesApi({ _order: sortOrder, page: pageParam, limit: 10 }),
+        getNextPageParam: (lastGroup) => lastGroup.nextOffset,
+        initialPageParam: 1,
         retry: 0,
     });
-    useEffect(() => {
-        if (Array.isArray(data)) {
-            setCardList(data);
-        }
-    }, [data]);
+    const allRows = data ? data.pages.flatMap((d) => d.rows) : [];
+    // useEffect(() => {
+    //     if (Array.isArray(data)) {
+    //         setCardList(data);
+    //     }
+    // }, [data]);
     console.log(data, isLoading, isError);
 
     const rowVirtualizer = useVirtualizer({
-        count: cardList.length,
+        count: hasNextPage ? allRows.length + 1 : allRows.length,
         getScrollElement: () => parentRef.current,
         estimateSize: () => 80,
         overscan: 90,
     });
+    const virtualItems = rowVirtualizer.getVirtualItems();
+    useEffect(() => {
+        const [lastItem] = [...virtualItems].reverse();
+        if (!lastItem) {
+            return;
+        }
+        if (
+            lastItem.index >= allRows.length - 1 &&
+            hasNextPage &&
+            !isFetchingNextPage
+        ) {
+            fetchNextPage();
+        }
+    }, [
+        hasNextPage,
+        fetchNextPage,
+        allRows.length,
+        isFetchingNextPage,
+        virtualItems,
+    ]);
     const { mutate } = useMutation({ mutationFn: cardDeleteApi });
     const handleCardVote = async (id: string) => {
-        const updatedCard = cardList.find((card) => card.id === id);
+        const updatedCard = data?.pages
+            .flatMap((page) => page.rows)
+            .find((card) => card.id === id);
         if (updatedCard) {
             const updatedData = { ...updatedCard, vote: updatedCard.vote + 1 };
             try {
@@ -124,9 +161,15 @@ const CardPageSectionTest: React.FC = () => {
             };
             cardUpdate();
         } else {
+            const lastPageItems = data?.pages.at(-1)?.rows;
+            const lastCardId =
+                lastPageItems && lastPageItems.length > 0
+                    ? lastPageItems.at(-1)?.id
+                    : null;
+
             const newCardId =
-                data && data.length > 0 && !isNaN(Number(data?.at(-1)?.id))
-                    ? (Number(data?.at(-1)?.id) + 1).toString()
+                lastCardId && !isNaN(Number(lastCardId))
+                    ? (Number(lastCardId) + 1).toString()
                     : "1";
 
             const newCard = {
@@ -159,7 +202,9 @@ const CardPageSectionTest: React.FC = () => {
         });
     };
     const handleEditClick = (id: string) => {
-        const cardToEdit = data?.find((card) => card.id === id);
+        const cardToEdit = data?.pages
+            .flatMap((page) => page.rows)
+            .find((card) => card.id === id);
         if (cardToEdit) {
             setEditableCard(cardToEdit);
             formRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -202,41 +247,50 @@ const CardPageSectionTest: React.FC = () => {
                 </p>
                 <div ref={parentRef} className={styles.virtualDivParent}>
                     <div className={styles.virtualDiv}>
-                        {rowVirtualizer.getVirtualItems().map((virtualItem) => {
-                            const card = cardList[virtualItem.index];
-                            //  if (!card) return null;
+                        {virtualItems.map((virtualRow) => {
+                            const isLoaderRow =
+                                virtualRow.index > allRows.length - 1;
+                            const card = allRows[virtualRow.index];
 
                             return (
                                 <div
-                                    key={card.id}
+                                    key={virtualRow.index}
                                     className={styles.divVirtual}
                                 >
-                                    <PageCard key={card.id} id={card.id}>
-                                        <PageCardHeader
-                                            image={card.image}
-                                            altText={`${card.name} Flag`}
-                                        />
-                                        <PageCardContent
-                                            heading={handleNameLang(
-                                                selectedLang,
-                                                card,
-                                            )}
-                                            population={card.population}
-                                            capital={handleCapitalLang(
-                                                selectedLang,
-                                                card,
-                                            )}
-                                            onVote={() =>
-                                                handleCardVote(card.id)
-                                            }
-                                            voteCount={card.vote}
-                                        />
-                                        <PageCardFooter
-                                            id={card.id}
-                                            onDelete={handleCardDelete}
-                                            onEdit={handleEditClick}
-                                        />
-                                    </PageCard>
+                                    {isLoaderRow ? (
+                                        hasNextPage ? (
+                                            "Loading...."
+                                        ) : (
+                                            "All the data has been loaded"
+                                        )
+                                    ) : (
+                                        <PageCard key={card.id} id={card.id}>
+                                            <PageCardHeader
+                                                image={card.image}
+                                                altText={`${card.name} Flag`}
+                                            />
+                                            <PageCardContent
+                                                heading={handleNameLang(
+                                                    selectedLang,
+                                                    card,
+                                                )}
+                                                population={card.population}
+                                                capital={handleCapitalLang(
+                                                    selectedLang,
+                                                    card,
+                                                )}
+                                                onVote={() =>
+                                                    handleCardVote(card.id)
+                                                }
+                                                voteCount={card.vote}
+                                            />
+                                            <PageCardFooter
+                                                id={card.id}
+                                                onDelete={handleCardDelete}
+                                                onEdit={handleEditClick}
+                                            />
+                                        </PageCard>
+                                    )}
                                 </div>
                             );
                         })}

@@ -13,24 +13,52 @@ interface Country {
     image: string;
     vote: number;
 }
+interface CountriesApiResponse {
+    rows: Country[];
+    nextOffset: number | null;
+}
+
+function getNextPageNumber(relType: string, pagination: string) {
+    const regex = new RegExp(`<[^>]*[?&]_page=(\\d+)[^>]*>; rel="${relType}"`);
+    const match = pagination.match(regex);
+    return match ? parseInt(match[1], 10) : null;
+}
 export const getCountriesApi = async (params: {
     _order: "asc" | "desc";
-}): Promise<Country[]> => {
+    page: number;
+    limit: number;
+}): Promise<CountriesApiResponse> => {
     if (params._order === "asc") {
         try {
-            const response = await HttpClient.get("/countries?_sort=vote");
-            return response.data;
+            const response = await HttpClient.get<Country[]>(
+                `/countries?_page=${params.page}&_limit=${params.limit}&_sort=vote`,
+            );
+            return {
+                rows: response.data,
+                nextOffset: getNextPageNumber("next", response.headers.link),
+            };
         } catch (error) {
             console.log("error:", error);
-            return [];
+            return {
+                rows: [],
+                nextOffset: null,
+            };
         }
     } else {
         try {
-            const response = await HttpClient.get("/countries?_sort=-vote");
-            return response.data;
+            const response = await HttpClient.get(
+                `/countries?_page=${params.page}&_limit=${params.limit}&_sort=-vote`,
+            );
+            return {
+                rows: response.data,
+                nextOffset: getNextPageNumber("next", response.headers.link),
+            };
         } catch (error) {
             console.log("error:", error);
-            return [];
+            return {
+                rows: [],
+                nextOffset: null,
+            };
         }
     }
 };
